@@ -1,0 +1,64 @@
+#! /bin/bash
+# TODO 99: create zsh bash completion 
+
+RC_BINARY="rc.d"
+DESCRIPTION="systemctl wrapper for easier view of current services"
+MAINTAINER="marko.rakamaric@gmail.com"
+
+RC_DATA_PATH="/home/marko/Documents/projects/bash/rc.sysd"
+RC_LIB_PATH="${RC_DATA_PATH}/lib"
+RC_CORE="${RC_LIB_PATH}/core.bash"
+
+# config files
+#RC_CONFIG_HOME="/home/${USER}/.config/rc.sysd/config"
+RC_CONFIG_WIDE="/etc/rc.sysd/config"
+
+# give us ability for trap execution
+trap 'echo "exiting" >&2; exit 250' 15
+
+# source CORE
+source ${RC_CORE}
+
+# now we can use inherit to load specific lib on request
+#inherit colors output config
+inherit output config
+
+do_service(){
+	
+	[[ $action != "list" ]] && check_service "$2"
+	do_service_${action} "$2"
+}
+
+args=("$@")
+# --Flags
+VERBOSE=0
+FAILED=0
+STARTED=0
+STOPPED=0
+NOCOLOR=0
+ALL=0
+INFO=0
+
+for action in $1; do
+	case $action in 
+		start|stop|restart|\
+		enable|disable|reload|\
+		status|list) 
+			source_config
+			inherit parser colors systemd-systemctl
+			
+			do_service "$action" "$2"
+			;;
+		* ) die -m "No such action ${R}<$action>${N}"
+	esac
+done
+
+# possible actions:
+# start | stop | restart | reload | enable | disable | status | list 
+# possible opt:
+# --started | --stopped | --failed | --all | --nocolor | --verbose
+
+
+# TODO 2: Allow second parameters
+#	rc.sysd list [target,service,mount,device,socket]
+#		2.2 - verbose flag for [status restart,start,stop,reload,enable,disable]
