@@ -1,0 +1,24 @@
+# configuration file of rc.sysd
+
+# set location of systemctl 
+# by default /usr/bin/systemctl
+#SYSTEMCTL=""
+
+# hide daemons from list which is irelevant for you 
+# note: use space to seperate them
+HIDEDAEMONS=(console-getty console-shell debug-shell ip6tables)
+
+# ignore static units state
+IGNORE_STATIC_STATE="yes"
+
+# ignore .service suffix from listing services 
+# ex rc.sysd list will strip .service from it's name
+IGNORE_UNIT_SUFFIX="yes"
+
+# show unit types by default when operatingm
+# value: [ service target socket mount device path ]
+# NOTE: only one can be chosen
+UNIT_TYPE_DEFAULT="service"
+
+# use colorized output
+USE_COLORS="yes"

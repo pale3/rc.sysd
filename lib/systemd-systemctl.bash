@@ -24,8 +24,12 @@ do_service_stop(){
 do_service_status(){
 	local unit="$1"
 
+	(( $INFO )) && dsc=$(get_unit_description "$unit" )
+
 	_get_state_info_ "$unit"
-	write_ad_output "${B}[${N} $onboot ${B}]${N}" "${B}[${N} $state ${B}]${N}" " $unit"
+	write_ad_output "${B}[${N} $onboot ${B}]${N}" "${B}[${N} $state ${B}]${N}" " $unit" "${W}${dsc}${N}"
+	
+	(( $VERBOSE )) &&	$_systemctl status "$unit" | tail -n +2
 }
 
 do_service_restart(){
@@ -105,8 +109,7 @@ do_service_list(){
 		[[ $IGNORE_UNIT_SUFFIX == "yes" ]] && \
 			unit=${unit/.${unit_type:=$UNIT_TYPE_DEFAULT}/}
 		
-		output_align "$unit"
-
+		output_align "$unit" && \
 		write_ad_output "${B}[${N} $onboot ${B}]${N}" "${B}[${N} $state ${B}]${N}" " $unit" "${W}${dsc}${N}"
 		
 	done < <($_systemctl --no-legend --no-pager -t ${unit_type:=$UNIT_TYPE_DEFAULT} list-unit-files | \
