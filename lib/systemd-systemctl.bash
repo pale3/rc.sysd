@@ -99,11 +99,15 @@ do_service_list(){
 		[[ $(is_unit_started "$unit") == "True" ]] && \
 			state="${G}STARTED${N}" || state="${R}STOPPED${N}"
 
-		[[ $onboot == "disabled" ]] && onboot="    "
-		[[ $onboot == "enabled" ]] && onboot="${W}AUTO${N}"
-	
+		case $onboot in
+			 disabled ) onboot="    " ;;
+				enabled ) onboot="${W}AUTO${N}" ;;
+				 masked ) onboot="${W}MASK${N}" ;;
+		esac
+
 		(( $STARTED )) && list_started_units "$state"
 		(( $STOPPED )) && list_stopped_units "$state"
+		(( $MASKED ))  && list_masked_units "$state"
 
 		# read var from conf file and determine view behavior
 		[[ $IGNORE_UNIT_SUFFIX == "yes" ]] && \

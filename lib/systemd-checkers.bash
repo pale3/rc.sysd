@@ -85,6 +85,11 @@ list_failed_units(){
 	fi
 }
 
+list_masked_units(){
+	local state="$1"
+	[[ $onboot == "${W}MASK${N}" ]] && return || continue 
+}
+
 get_unit_description(){
 	local unit="$1"
 	$_systemctl status "$unit" | head -n1 | awk '{$1=$2=$3=""; print $0}'

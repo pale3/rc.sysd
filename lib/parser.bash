@@ -10,6 +10,7 @@ for opt in ${args[@]:1}; do
 		--stopped ) STOPPED=1 ;;
 		--nocolor ) NOCOLOR=1 ;;
 		--info    ) INFO=1 ;;
+		--masked  ) MASKED=1 ;;
 	  --all     ) ALL=1; unit_type="service,mount,device,socket,target,path,timer" ;;
 	service|mount|device|socket|target|path|timer) unit_type="${opt}" ;;
 					--* ) die -m "no such flag ${R}$opt${N}" ;;
