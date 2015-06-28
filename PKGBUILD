@@ -19,6 +19,9 @@ pkgver() {
 package() { 
 	cd ${_pkgname}
 	
+	mkdir -p "${pkgdir}"/usr/bin/
+	cp $_pkgname "${pkgdir}"/usr/bin
+	
 	mkdir -p "${pkgdir}"/usr/lib/rc.sysd/
 	cp -R lib/* "${pkgdir}"/usr/lib/rc.sysd
 
