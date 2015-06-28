@@ -1,12 +1,12 @@
 #! /bin/bash
 # TODO 99: create zsh bash completion 
 
-RC_BINARY="rc.d"
+RC_BINARY="rc.sysd"
 DESCRIPTION="systemctl wrapper for easier view of current services"
 MAINTAINER="marko.rakamaric@gmail.com"
 
-RC_DATA_PATH="/home/marko/Documents/projects/bash/rc.sysd"
-RC_LIB_PATH="${RC_DATA_PATH}/lib"
+RC_DATA_PATH="/usr/lib/rc.sysd"
+RC_LIB_PATH="${RC_DATA_PATH}"
 RC_CORE="${RC_LIB_PATH}/core.bash"
 
 # config files
